@@ -1,0 +1,48 @@
+﻿@using Transferencias.Models
+@using global::Itens.Enums
+
+<link href="css/CardItem.css" rel="stylesheet" />
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500" rel="stylesheet">
+
+<div class="card">
+   <div class="card-avatar">
+      <img class="card-avatar" src="@CaminhoImagem(transferencia.Item.Raridade, transferencia.Item.Tipo)">
+   </div>
+   <div class="card-details">
+      <div class="value">@transferencia.Item.IdChain</div>
+      <div class="label">@transferencia.Valor eth</div>
+      
+      <div class="card-about">
+         <div class="item">
+            <span class="value">@transferencia.Item.Ataque</span>
+            <span class="label">Atk</span>
+         </div>
+         <div class="item">
+            <span class="value">@transferencia.Item.Defesa</span>
+            <span class="label">Def</span>
+         </div>
+         <div class="item">
+            <span class="value">@transferencia.Item.Acerto</span>
+            <span class="label">Acerto</span>
+         </div>
+         <div class="item">
+            <span class="value">@transferencia.Item.Vida</span>
+            <span class="label">Vida</span>
+         </div>
+      </div>
+      <div class="skills">
+         <span class="value">@transferencia.Item.Habilidade.Efeito</span>
+      </div>
+   </div>
+</div>
+
+@code{
+    [Parameter]
+    public TransferenciaViewModel transferencia { get; set; }
+
+    private string CaminhoImagem(int raridade, int tipo)
+        {
+            return "images/" + (Tipos)tipo + "/" + (Raridades)raridade + ".png";
+        }
+}

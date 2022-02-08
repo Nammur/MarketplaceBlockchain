@@ -1,0 +1,28 @@
+﻿@page "/"
+@using MetaMask.Blazor
+@using TrabalhoFinalBlockChain.Client.Pages.Itens
+
+<PageTitle>Index</PageTitle>
+
+<ListagemItens></ListagemItens>
+
+@code{
+    [Inject]    
+    public MetaMaskService MetaMaskService { get; set; } = default!;
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        ConectarMetaMask();
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected async void ConectarMetaMask()
+    {
+        bool hasMetaMask = await MetaMaskService.HasMetaMask();
+        bool isSiteConnected = await MetaMaskService.IsSiteConnected();
+        if (hasMetaMask && !isSiteConnected)
+        {
+            await MetaMaskService.ConnectMetaMask();
+        }
+    }
+}

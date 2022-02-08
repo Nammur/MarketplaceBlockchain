@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\CardItem.css" />
+    <None Include="wwwroot\images\Espada\Epico.png" />
+    <None Include="wwwroot\images\Espada\Incomum.png" />
+    <None Include="wwwroot\images\Espada\Lendario.png" />
+    <None Include="wwwroot\images\Espada\Normal.png" />
+    <None Include="wwwroot\images\Espada\Unico.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MetaMask.Blazor" Version="1.6.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Item\Itens.csproj" />
+    <ProjectReference Include="..\..\Player\Players.csproj" />
+    <ProjectReference Include="..\..\Transferencias\Transferencias.csproj" />
+    <ProjectReference Include="..\Shared\TrabalhoFinalBlockChain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

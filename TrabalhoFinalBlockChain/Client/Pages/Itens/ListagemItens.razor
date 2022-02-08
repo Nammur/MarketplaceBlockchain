@@ -1,0 +1,49 @@
+﻿@using Transferencias.Models
+@using System.Text.Json
+@using global::Itens.Models
+@inject HttpClient http
+
+<link href="css/CardItem.css" rel="stylesheet" />
+
+@if(carregando == true)
+{
+    <p><em>Carregando...</em></p>
+}
+else if (transferencias == null || transferencias.Count == 0)
+{
+    <p><em>Sem item a venda</em></p>
+}
+else
+{
+    <div class="wrapper">
+    @foreach(var transf in transferencias)
+    {
+        <CardItem transferencia="@transf"></CardItem>
+    }
+    </div>
+}
+
+@code{
+    List<TransferenciaViewModel>? transferencias { get; set; }
+    bool carregando { get; set; }
+
+    protected override void OnInitialized()
+    {
+        carregando = true;
+        base.OnInitialized();
+        transferencias = new List<TransferenciaViewModel>();
+    }
+
+    protected override async void OnParametersSet()
+    {   
+        await ListarItensMercado();
+        base.OnParametersSet();
+    }
+
+    async Task ListarItensMercado()
+    {
+        transferencias = await http.GetFromJsonAsync<List<TransferenciaViewModel>>("api/transferencia/ListarTransferenciasMercado");
+        carregando = false;
+        this.StateHasChanged();
+    }
+}
