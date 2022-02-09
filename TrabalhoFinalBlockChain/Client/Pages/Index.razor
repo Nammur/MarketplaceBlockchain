@@ -1,28 +1,56 @@
 ﻿@page "/"
 @using MetaMask.Blazor
 @using TrabalhoFinalBlockChain.Client.Pages.Itens
+@using TrabalhoFinalBlockChain.Client.Pages.Players
+@using global::Players.Models
+@inject HttpClient http
 
 <PageTitle>Index</PageTitle>
 
 <ListagemItens></ListagemItens>
 
+
 @code{
     [Inject]    
     public MetaMaskService MetaMaskService { get; set; } = default!;
 
-    protected override Task OnAfterRenderAsync(bool firstRender)
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
+
+    public Player? Player { get; set; }
+
+    private string? SelectedAddress {get; set;}
+
+    protected override async Task OnInitializedAsync()
     {
-        ConectarMetaMask();
-        return base.OnAfterRenderAsync(firstRender);
+        SelectedAddress = await MetaMaskService.GetSelectedAddress();
+        Player = new Player();
+        await RecuperarPlayer(SelectedAddress);
     }
 
-    protected async void ConectarMetaMask()
+    private async Task RecuperarPlayer(string? idCarteira)
     {
-        bool hasMetaMask = await MetaMaskService.HasMetaMask();
-        bool isSiteConnected = await MetaMaskService.IsSiteConnected();
-        if (hasMetaMask && !isSiteConnected)
+        if (!string.IsNullOrEmpty(idCarteira))
         {
-            await MetaMaskService.ConnectMetaMask();
+            Player = await http.GetFromJsonAsync<Player>("api/player/RecuperarPlayer?idCarteira=" + idCarteira);
+
+            if (string.IsNullOrEmpty(Player.IdCarteira))
+            {
+                ShowModalCriarConta();
+            }
         }
+    } 
+
+    private void ShowModalCriarConta()
+    {
+        var parametros = new ModalParameters();
+        parametros.Add("idCarteira", SelectedAddress);
+
+        var options = new ModalOptions()
+            {
+                HideHeader = true
+            };
+
+        Modal.Show<CriarConta>("",parametros,options);
     }
 }

@@ -14,6 +14,7 @@ namespace Players.Models
         [JsonProperty("nick")]
         public string Nick { get; set; }
 
+
         public Player() 
         {
             Nick = "";

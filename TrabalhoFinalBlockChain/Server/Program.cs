@@ -9,6 +9,7 @@ using Players.Repository;
 using Transferencias.Services;
 using Transferencias.Repository;
 using Transferencias.Infra;
+using Blazored.Modal;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,0 +1,21 @@
+﻿@page "/ModalMensagem"
+@using global::Players.Models
+@inject HttpClient http
+@inject NavigationManager navigation
+
+
+<h1 style="font-size:20px;">@Mensagem</h1>
+<button @onclick="Ok" class="btn btn-primary">Ok</button>
+
+@code {
+    [CascadingParameter]
+    public BlazoredModalInstance ModalInstance { get; set; }
+
+    [Parameter]
+    public string Mensagem { get; set; }
+
+    void Ok()
+    {
+        ModalInstance.CloseAsync(ModalResult.Ok("Ok."));
+    }
+}

@@ -17,7 +17,16 @@ namespace Players.Services
         public List<Player> ListarPlayers() => _playerRepository.ListarPlayers();
 
         public Player RecuperarPlayer(int id) => _playerRepository.RecuperarPlayer(id);
-        
+        public Player RecuperarPlayer(string idCarteira)
+        {
+            var player = _playerRepository.RecuperarPlayer(idCarteira);
+
+            if (player == null)
+                player = new Player();
+
+            return player;
+        } 
+
         public void Criar(Player player)
         {
             _playerRepository.Criar(player);

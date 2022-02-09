@@ -1,4 +1,5 @@
-﻿@using Transferencias.Models
+﻿@using MetaMask.Blazor
+@using Transferencias.Models
 @using global::Itens.Enums
 
 <link href="css/CardItem.css" rel="stylesheet" />
@@ -35,11 +36,65 @@
          <span class="value">@transferencia.Item.Habilidade.Efeito</span>
       </div>
    </div>
+   <button class="skills" onclick="@Comprar">
+       <span class="value">Comprar</span>
+   </button>
 </div>
 
 @code{
     [Parameter]
     public TransferenciaViewModel transferencia { get; set; }
+
+    [Inject]    
+    public MetaMaskService MetaMaskService { get; set; } = default!;
+
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
+
+    private string idCarteira { get; set; } = "";
+
+    private async void Comprar()
+    {
+        var temMeta = await MetaMaskService.HasMetaMask();
+        var conectado = await MetaMaskService.IsSiteConnected();
+
+        if(temMeta && conectado)
+        {
+            idCarteira = await MetaMaskService.GetSelectedAddress();
+        }
+
+        var options = new ModalOptions()
+                {
+                    HideHeader = true
+                };
+
+        if(string.IsNullOrEmpty(idCarteira))
+        {
+            var parametros = new ModalParameters();
+            parametros.Add("mensagem", "Você precisa fazer o login no metamask para poder comprar.");
+
+            Modal.Show<ModalMensagem>("", parametros, options);
+        }
+        else if(transferencia.Vendedor.IdCarteira == idCarteira)
+        {
+            var parametros = new ModalParameters();
+            parametros.Add("mensagem", "Você nâo pode comprar seu próprio item.");
+
+            Modal.Show<ModalMensagem>("", parametros, options);
+        }
+        else
+        {
+            var parametros = new ModalParameters();
+            parametros.Add("mensagem", "Deseja mesmo comprar esse item? \n" + transferencia.Item.IdChain + "\n" + transferencia.Valor + " eth"); 
+
+            var status = await Modal.Show<ModalConfirm>("", parametros, options).Result;
+
+            if(!status.Cancelled)
+            {
+                Console.WriteLine("testreemdogimfiomvdofmçsdmvsldkgpodfmkdmflkbmdfbkml");
+            }
+        }
+    }
 
     private string CaminhoImagem(int raridade, int tipo)
         {
