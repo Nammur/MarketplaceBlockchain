@@ -5,8 +5,8 @@ namespace Transferencias.Repository
 {
     public interface ITransferenciaRepository
     {
-        void Criar(Transferencia transferencia);
-        void Editar(Transferencia transferencia);
+        void Criar(TransferenciaViewModel transferencia);
+        void Editar(TransferenciaViewModel transferencia);
         bool Excluir(int id);
         List<Transferencia> ListarTransferenciasPlayer(int idPLayer);
         List<Transferencia> ListarTransferenciasItem(int idItem);

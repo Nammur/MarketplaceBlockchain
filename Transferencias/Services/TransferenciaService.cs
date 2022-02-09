@@ -76,14 +76,30 @@ namespace Transferencias.Services
 
         }
         
-        public void Criar(Transferencia transferencia)
+        public void Criar(TransferenciaViewModel transferencia)
         {
             _transferenciaRepository.Criar(transferencia);
         }
 
-        public void Editar(Transferencia transferencia)
+        public void Editar(TransferenciaViewModel transferencia)
         {
             _transferenciaRepository.Editar(transferencia);
+        }
+
+        public bool Comprar(TransferenciaViewModel transferencia)
+        {
+            try
+            {
+                transferencia.DataTransferencia = DateTime.Now;
+                transferencia.Vendido = true;
+                Editar(transferencia);
+                _itemService.TransferirItem(transferencia.Item.Id, transferencia.Vendedor.Id, transferencia.Comprador.Id);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool Excluir(int id) => _transferenciaRepository.Excluir(id);

@@ -28,12 +28,19 @@ namespace TrabalhoFinalBlockChain.Server.Controllers
         //    return _itemService.RecuperarItem(id);
         //}
 
-        //[HttpPost]
-        //public ActionResult Criar([FromBody]Item item)
-        //{
-        //    _itemService.Criar(item);
-        //    return Ok();
-        //}
+        [HttpPut("Comprar")]
+        public ActionResult Comprar([FromBody] TransferenciaViewModel transferencia)
+        {
+            _transferenciaService.Comprar(transferencia);
+            return Ok();
+        }
+
+        [HttpPut("Vender")]
+        public ActionResult VenderItem([FromBody] TransferenciaViewModel transferencia)
+        {
+            _transferenciaService.Criar(transferencia);
+            return Ok();
+        }
 
         //[HttpPut]
         //public ActionResult Editar([FromBody] ItemViewModel item)
@@ -53,6 +60,6 @@ namespace TrabalhoFinalBlockChain.Server.Controllers
 
         //    return Json(new { status = true, notificacoes = "Item excluído." });
         //}
-        
+
     }
 }

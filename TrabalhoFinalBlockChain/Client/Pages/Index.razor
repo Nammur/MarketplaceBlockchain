@@ -17,6 +17,7 @@
     [CascadingParameter]
     public IModalService Modal { get; set; }
 
+    [Inject]
     public Player? Player { get; set; }
 
     private string? SelectedAddress {get; set;}
@@ -24,7 +25,7 @@
     protected override async Task OnInitializedAsync()
     {
         SelectedAddress = await MetaMaskService.GetSelectedAddress();
-        Player = new Player();
+        //Player = new Player();
         await RecuperarPlayer(SelectedAddress);
     }
 
@@ -32,7 +33,7 @@
     {
         if (!string.IsNullOrEmpty(idCarteira))
         {
-            Player = await http.GetFromJsonAsync<Player>("api/player/RecuperarPlayer?idCarteira=" + idCarteira);
+            Player.SetPLayer(await http.GetFromJsonAsync<Player>("api/player/RecuperarPlayer?idCarteira=" + idCarteira));
 
             if (string.IsNullOrEmpty(Player.IdCarteira))
             {

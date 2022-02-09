@@ -14,6 +14,8 @@ namespace Players.Models
         [JsonProperty("nick")]
         public string Nick { get; set; }
 
+        public event Action OnChange;
+
 
         public Player() 
         {
@@ -26,6 +28,18 @@ namespace Players.Models
             Id = id;
             IdCarteira = idCarteira;
             Nick = nick;
+        }
+
+        public void SetPLayer(Player player)
+        {
+            Id = player.Id;
+            IdCarteira = player.IdCarteira; 
+            Nick = player.Nick; 
+        }
+
+        private void NotifyStateChanged()
+        {
+            OnChange?.Invoke();
         }
     }
 

@@ -10,7 +10,7 @@ namespace Transferencias.Infra
         {
         }
 
-        public void Criar(Transferencia transferencia)
+        public void Criar(TransferenciaViewModel transferencia)
         {
             var sql = @"INSERT INTO dbo.Transferencia
                                     (IdVendedor, IdItem, Valor, DataPublicacaoVenda, Vendido)
@@ -18,8 +18,8 @@ namespace Transferencias.Infra
                                     (@idVendedor, @idItem, @valor, @dataPublicacaoVenda, @vendido)";
             var @params = new List<DataParameter>
                     {
-                        DataParameter.Create("idVendedor", transferencia.IdVendedor),
-                        DataParameter.Create("idItem", transferencia.IdItem),
+                        DataParameter.Create("idVendedor", transferencia.Vendedor.Id),
+                        DataParameter.Create("idItem", transferencia.Item.Id),
                         DataParameter.Create("valor", transferencia.Valor),
                         DataParameter.Create("dataPublicacaoVenda", transferencia.DataPublicacaoVenda),
                         DataParameter.Create("vendido", transferencia.Vendido),
@@ -28,9 +28,20 @@ namespace Transferencias.Infra
             Execute(sql, @params);
         }
 
-        public void Editar(Transferencia transferencia)
+        public void Editar(TransferenciaViewModel transferencia)
         {
-            throw new NotImplementedException();
+            var sql = @"UPDATE dbo.Transferencia
+                            SET IdComprador = @idComprador, Vendido = @vendido, DataTransferencia = @data
+                            WHERE Id = @id";
+            var @params = new List<DataParameter>
+                {
+                    DataParameter.Create("id",transferencia.Id),
+                    DataParameter.Create("idComprador", transferencia.Comprador.Id),
+                    DataParameter.Create("vendido", transferencia.Vendido),
+                    DataParameter.Create("data", transferencia.DataTransferencia),
+                };
+
+            Execute(sql, @params);
         }
 
         public bool Excluir(int id)

@@ -1,6 +1,8 @@
 ﻿@using MetaMask.Blazor
 @using Transferencias.Models
 @using global::Itens.Enums
+@using global::Players.Models
+@inject HttpClient http
 
 <link href="css/CardItem.css" rel="stylesheet" />
 
@@ -48,6 +50,9 @@
     [Inject]    
     public MetaMaskService MetaMaskService { get; set; } = default!;
 
+    [Inject]
+    public Player? Player { get; set; }
+
     [CascadingParameter]
     public IModalService Modal { get; set; }
 
@@ -91,7 +96,8 @@
 
             if(!status.Cancelled)
             {
-                Console.WriteLine("testreemdogimfiomvdofmçsdmvsldkgpodfmkdmflkbmdfbkml");
+                transferencia.Comprador = Player;
+                await http.PutAsJsonAsync("api/transferencia/Comprar", transferencia);
             }
         }
     }
