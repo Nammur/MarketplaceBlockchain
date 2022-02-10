@@ -1,0 +1,94 @@
+﻿@using MetaMask.Blazor
+@using Transferencias.Models
+@using global::Itens.Enums
+@using global::Itens.Models
+@using global::Players.Models
+@inject HttpClient http
+
+<link href="css/CardItem.css" rel="stylesheet" />
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500" rel="stylesheet">
+
+<div class="card">
+   <div class="card-avatar">
+      <img class="card-avatar" src="@CaminhoImagem(Item.Raridade, Item.Tipo)">
+   </div>
+   <div class="card-details">
+      <div class="value">@Item.IdChain</div>
+      
+      <div class="card-about">
+         <div class="item">
+            <span class="value">@Item.Ataque</span>
+            <span class="label">Atk</span>
+         </div>
+         <div class="item">
+            <span class="value">@Item.Defesa</span>
+            <span class="label">Def</span>
+         </div>
+         <div class="item">
+            <span class="value">@Item.Acerto</span>
+            <span class="label">Acerto</span>
+         </div>
+         <div class="item">
+            <span class="value">@Item.Vida</span>
+            <span class="label">Vida</span>
+         </div>
+      </div>
+      <div class="skills">
+         <span class="value">@Item.Habilidade.Efeito</span>
+      </div>
+   </div>
+   <button class="skills" onclick="@Vender">
+       <span class="value">Vender</span>
+   </button>
+</div>
+
+@code{
+    [Parameter]
+    public ItemViewModel Item { get; set; }
+
+    [Inject]    
+    public MetaMaskService MetaMaskService { get; set; } = default!;
+
+    [Inject]
+    public Player? Player { get; set; }
+
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
+
+    private string idCarteira { get; set; } = "";
+
+    private async void Vender()
+    {
+        var options = new ModalOptions()
+                {
+                    HideHeader = true
+                };
+
+        var transfAtiva =  await http.GetFromJsonAsync<Player>("api/transferencia/RecuperarTransferenciaAtiva?idItem=" + Item.Id);
+
+        var parametros = new ModalParameters();
+        if(transfAtiva.Id != null)
+        {
+            parametros.Add("mensagem", "Seu item já está a venda."); 
+            await Modal.Show<ModalMensagem>("", parametros, options).Result;
+            return;
+        }
+
+        parametros.Add("mensagem", "Deseja mesmo Vender esse item? \n" + Item.IdChain); 
+
+        var status = await Modal.Show<ModalConfirm>("", parametros, options).Result;
+
+        if(!status.Cancelled)
+        {
+            parametros = new ModalParameters();
+            parametros.Add("Item", Item); 
+            await Modal.Show<ModalValorItem>("", parametros, options).Result;
+        }
+    }
+
+    private string CaminhoImagem(int raridade, int tipo)
+        {
+            return "images/" + (Tipos)tipo + "/" + (Raridades)raridade + ".png";
+        }
+}

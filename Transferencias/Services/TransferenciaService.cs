@@ -59,7 +59,14 @@ namespace Transferencias.Services
             var transferencia = _transferenciaRepository.RecuperarTransferencia(id);
 
             return TransferenciaToViewModel(transferencia);
-        } 
+        }
+
+        public TransferenciaViewModel RecuperarTransferenciaAtiva(int idItem)
+        {
+            var transferencia = _transferenciaRepository.RecuperarTransferenciaAtiva(idItem);
+
+            return TransferenciaToViewModel(transferencia);
+        }
 
         private TransferenciaViewModel TransferenciaToViewModel(Transferencia transferencia)
         {
@@ -78,6 +85,8 @@ namespace Transferencias.Services
         
         public void Criar(TransferenciaViewModel transferencia)
         {
+            transferencia.DataPublicacaoVenda = DateTime.Now;
+            transferencia.Vendido = false;
             _transferenciaRepository.Criar(transferencia);
         }
 

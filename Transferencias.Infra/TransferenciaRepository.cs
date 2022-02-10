@@ -108,5 +108,17 @@ namespace Transferencias.Infra
 
             return Query<Transferencia>(sql, @params).ToList().FirstOrDefault();
         }
+
+        public Transferencia RecuperarTransferenciaAtiva(int idItem)
+        {
+            var sql = @"SELECT * FROM dbo.Transferencia where IdItem = @idItem and Vendido = @vendido";
+            var @params = new List<DataParameter>
+            {
+                DataParameter.Create("idItem", idItem),
+                DataParameter.Create("vendido", false),
+            };
+
+            return Query<Transferencia>(sql, @params).ToList().FirstOrDefault();
+        }
     }
 }

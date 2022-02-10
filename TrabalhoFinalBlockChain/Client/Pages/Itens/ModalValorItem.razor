@@ -1,0 +1,50 @@
+﻿@page "/ValorItem"
+@using Transferencias.Models
+@using global::Itens.Models
+@using global::Players.Models
+@inject HttpClient http
+@inject NavigationManager navigation
+
+@if (string.IsNullOrEmpty(Player.IdCarteira))
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h1 style="font-size:20px;">Informe o valor do item para venda.</h1>
+    <EditForm Model="@transferencia" style="max-width:300px; max-height: 200px; margin-top:20px; display:inline-block" OnValidSubmit="@Vender">
+        <div style="margin-top:5px;">
+            <div class="form-group">
+                <InputNumber @bind-Value="@transferencia.Valor"  style="display:inline-block" placeholder="Valor" />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="display:inline-block; margin-top:20px">Vender</button>
+    </EditForm>
+}
+
+@code {
+    [Inject]
+    public Player? Player { get; set; }
+
+    [CascadingParameter]
+    public BlazoredModalInstance ModalInstance { get; set; }
+
+    [Parameter]
+    public ItemViewModel Item { get; set; }
+
+    private TransferenciaViewModel transferencia { get; set; }
+
+    protected override void OnInitialized()
+    {
+        transferencia = new TransferenciaViewModel();
+        transferencia.Vendedor = Player;
+        transferencia.Item = Item;
+        base.OnInitialized();
+    }
+
+    async void Vender()
+    {
+        await http.PutAsJsonAsync<TransferenciaViewModel>("api/transferencia/Vender", transferencia);
+        ModalInstance.CloseAsync();
+    }
+}

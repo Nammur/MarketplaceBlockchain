@@ -13,5 +13,6 @@ namespace Transferencias.Repository
         List<Transferencia> ListarTransferenciasMercado();
         void ConcluirTransferencia(Transferencia transferencia);
         Transferencia RecuperarTransferencia(int id);
+        Transferencia RecuperarTransferenciaAtiva(int idItem);
     }
 }
