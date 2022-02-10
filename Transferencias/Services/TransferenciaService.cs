@@ -70,6 +70,8 @@ namespace Transferencias.Services
 
         private TransferenciaViewModel TransferenciaToViewModel(Transferencia transferencia)
         {
+            if(transferencia == null)
+                return new TransferenciaViewModel();
             var item = _itemService.RecuperarItem(transferencia.IdItem);
             var vendedor = _playerService.RecuperarPlayer(transferencia.IdVendedor);
 

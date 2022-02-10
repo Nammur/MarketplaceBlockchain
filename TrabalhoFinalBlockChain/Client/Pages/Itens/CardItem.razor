@@ -2,9 +2,11 @@
 @using Transferencias.Models
 @using global::Itens.Enums
 @using global::Players.Models
+@inject NavigationManager navigation
 @inject HttpClient http
 
 <link href="css/CardItem.css" rel="stylesheet" />
+<link href="css/CustomButton.css" rel="stylesheet" />
 
 <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500" rel="stylesheet">
 
@@ -14,7 +16,7 @@
    </div>
    <div class="card-details">
       <div class="value">@transferencia.Item.IdChain</div>
-      <div class="label">@transferencia.Valor eth</div>
+      <div class="label">@transferencia.Valor.ToString("G29") eth</div>
       
       <div class="card-about">
          <div class="item">
@@ -34,13 +36,17 @@
             <span class="label">Vida</span>
          </div>
       </div>
-      <div class="skills">
-         <span class="value">@transferencia.Item.Habilidade.Efeito</span>
+      <div>
+        <div class="skills">
+            <span class="value">@transferencia.Item.Habilidade.Efeito</span>
+        </div>
       </div>
    </div>
-   <button class="skills" onclick="@Comprar">
-       <span class="value">Comprar</span>
-   </button>
+   <div style="width:inherit; text-align:center;">
+        <button class="bn54" onclick="@Comprar">
+            <span class="bn54span">Comprar</span>
+        </button>
+   </div>
 </div>
 
 @code{
@@ -88,6 +94,7 @@
             {
                 transferencia.Comprador = Player;
                 await http.PutAsJsonAsync("api/transferencia/Comprar", transferencia);
+                navigation.NavigateTo("index", true);
             }
         }
     }

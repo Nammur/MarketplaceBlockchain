@@ -3,10 +3,15 @@
 @inject HttpClient http
 @inject NavigationManager navigation
 
+<link href="css/CustomButton.css" rel="stylesheet" />
 
 <h1 style="font-size:20px;">@Mensagem.</h1>
-<button @onclick="Ok" class="btn btn-primary">Sim</button>
-<button @onclick="Cancel" class="btn btn-secondary">Não</button>
+<button @onclick="Ok" class="bn54">
+    <span class="bn54span">Sim</span>
+</button>
+<button @onclick="Cancel" class="bn54">
+    <span class="bn54span">Não</span>
+</button>
 
 @code {
     [CascadingParameter]

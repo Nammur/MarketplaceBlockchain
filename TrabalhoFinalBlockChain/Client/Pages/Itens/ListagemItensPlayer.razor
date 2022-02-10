@@ -1,0 +1,55 @@
+﻿@page "/ListagemItensPlayer"
+@page "/inventario"
+@using Transferencias.Models
+@using System.Text.Json
+@using global::Itens.Models
+@using global::Players.Models
+@inject HttpClient http
+
+<link href="css/CardItem.css" rel="stylesheet" />
+
+@if(carregando == true)
+{
+    <p><em>Carregando...</em></p>
+}
+else if (itens == null || itens.Count == 0)
+{
+    <p><em>Sem itens no seu iventário</em></p>
+}
+else
+{
+    <div class="wrapper">
+    @foreach(var item in itens)
+    {
+        <CardItemPlayer item="@item"></CardItemPlayer>
+    }
+    </div>
+}
+
+@code{
+    [Inject]
+    public Player? Player { get; set; }
+
+    List<ItemViewModel>? itens { get; set; }
+
+    bool carregando { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        itens = new List<ItemViewModel>();
+    }
+
+    protected override async void OnParametersSet()
+    {   
+        await ListarItensJogador();
+        base.OnParametersSet();
+    }
+
+    async Task ListarItensJogador()
+    {
+        itens = await http.GetFromJsonAsync<List<ItemViewModel>>("api/item/ListarItensPlayer?idPlayer=" + Player.Id);
+        carregando = false;
+        this.StateHasChanged();
+    }
+}

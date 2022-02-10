@@ -1,4 +1,5 @@
-﻿@page "/"
+﻿@page "/index"
+@page "/"
 @using MetaMask.Blazor
 @using TrabalhoFinalBlockChain.Client.Pages.Itens
 @using TrabalhoFinalBlockChain.Client.Pages.Players
@@ -24,7 +25,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        SelectedAddress = await MetaMaskService.GetSelectedAddress();
+        bool hasMetaMask = await MetaMaskService.HasMetaMask();
+        if(hasMetaMask)
+            SelectedAddress = await MetaMaskService.GetSelectedAddress();
         await RecuperarPlayer(SelectedAddress);
     }
 

@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\css\CustomButton.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\CustomButton.css" />
     <None Include="wwwroot\css\CardItem.css" />
     <None Include="wwwroot\images\Espada\Epico.png" />
     <None Include="wwwroot\images\Espada\Incomum.png" />

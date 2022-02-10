@@ -22,6 +22,12 @@ namespace TrabalhoFinalBlockChain.Server.Controllers
             return _transferenciaService.ListarTransferenciasMercado();
         }
 
+        [HttpGet("ListarTransferenciasPlayer")]
+        public ActionResult<List<TransferenciaViewModel>> ListarTransferenciasPlayer(int idPlayer)
+        {
+            return _transferenciaService.ListarTransferenciasPlayer(idPlayer);
+        }
+
         [HttpGet("RecuperarTransferenciaAtiva")]
         public ActionResult<TransferenciaViewModel> RecuperarTransferenciaAtiva(int idItem)
         {

@@ -32,6 +32,18 @@ namespace Itens.Infra
             return Query<Item>(sql).ToList();
         }
 
+        public List<Item> ListarItensPlayer(int idPlayer)
+        {
+            var sql = @"SELECT * FROM dbo.Item where IdDono = @idDono";
+
+            var @params = new List<DataParameter>
+            {
+                DataParameter.Create("idDono", idPlayer),
+            };
+
+            return Query<Item>(sql, @params).ToList();
+        }
+
         public Item RecuperarItem(int id)
         {
             var sql = @"SELECT * FROM dbo.Item where Id = @id";

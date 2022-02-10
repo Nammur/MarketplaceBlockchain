@@ -22,6 +22,12 @@ namespace TrabalhoFinalBlockChain.Server.Controllers
             return _itemService.ListarItens();
         }
 
+        [HttpGet("ListarItensPlayer")]
+        public ActionResult<List<ItemViewModel>> ListarItensPlayer(int idPlayer)
+        {
+            return _itemService.ListarItensPlayer(idPlayer);
+        }
+
         [HttpGet("Recuperar")]
         public ActionResult<ItemViewModel> Recuperar(int id)
         {

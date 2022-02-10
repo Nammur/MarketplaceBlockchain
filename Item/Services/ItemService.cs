@@ -31,6 +31,19 @@ namespace Itens.Services
             return itensViewModel;
         }
 
+        public List<ItemViewModel> ListarItensPlayer(int idPlayer)
+        {
+            var itens = _itemRepository.ListarItensPlayer(idPlayer);
+            var itensViewModel = new List<ItemViewModel>();
+
+            foreach (var item in itens)
+            {
+                itensViewModel.Add(ItemToViewModel(item));
+            }
+
+            return itensViewModel;
+        }
+
         public ItemViewModel RecuperarItem(int id)
         {
             var item = _itemRepository.RecuperarItem(id);
