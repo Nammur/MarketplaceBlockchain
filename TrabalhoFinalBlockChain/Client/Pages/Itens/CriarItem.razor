@@ -1,0 +1,94 @@
+﻿@page "/CriarItem"
+@using System.Text.Json
+@using global::Itens.Models
+@using global::Itens.Enums
+@using global::Players.Models
+@inject HttpClient http
+
+
+<link href="css/CustomForm.css" rel="stylesheet" />
+<link href="css/CustomButton.css" rel="stylesheet" />
+
+
+@if (habilidades.Count == 0)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <EditForm Model="@item" OnValidSubmit="@Criar">
+        <InputSelect @bind-Value="item.Raridade" > 
+            @foreach (var raridade in raridades)
+            {
+                <option value="@GetValue(raridade)">@GetDisplayName(raridade)</option>
+            }
+        </InputSelect> 
+        <InputSelect @bind-Value="item.Tipo" > 
+            @foreach (var tipo in tipos)
+            {
+                <option value="@GetValue(tipo)">@GetDisplayName(tipo)</option>
+            }
+        </InputSelect> 
+        <InputSelect @bind-Value="item.Habilidade">
+            @foreach (var habilidade in habilidades)
+            {
+                <option value="@habilidade">@habilidade.Efeito</option>
+            }
+        </InputSelect>
+        <button class="bn54" type="submit">
+            <span class="bn54span">Criar</span>
+        </button>
+    </EditForm>
+}
+
+@code{
+    [Inject]
+    public Player? Player { get; set; }
+
+    private ItemViewModel item { get; set; } = new ItemViewModel();
+
+    private List<Habilidade> habilidades { get; set; }
+
+    private List<Tipos> tipos {get; set;}
+
+    private List<Raridades> raridades { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        habilidades = new List<Habilidade>();
+        //preencher lista de habilidades
+        item.Raridade = (int)Raridades.Normal;
+        item.Tipo = (int)Tipos.Espada;
+        habilidades.Add(new Habilidade(1,"Não possui efeito."));
+        item.Habilidade = habilidades[0];
+        tipos = Enum.GetValues(typeof(Tipos)).Cast<Tipos>().ToList();
+        raridades = Enum.GetValues(typeof(Raridades)).Cast<Raridades>().ToList();
+    }
+
+    public static string GetDisplayName(Enum enumValue)
+    {
+        var enumType = enumValue.GetType();
+
+        return enumType
+                .GetMember(enumValue.ToString())
+                .Where(x => x.MemberType == MemberTypes.Field && ((FieldInfo)x).FieldType == enumType)
+                .First()
+                .GetCustomAttribute<DisplayAttribute>()?.Name ?? enumValue.ToString();
+    }
+
+    public static int GetValue(Raridades enumValue)
+    {
+        return (int)enumValue;
+    }
+    public static int GetValue(Tipos enumValue)
+    {
+        return (int)enumValue;
+    }
+
+    public void Criar()
+    {
+        Console.WriteLine(item.Raridade + " " + item.Tipo);
+    }
+
+}

@@ -1,4 +1,7 @@
-﻿<CascadingBlazoredModal>
+﻿@using MetaMask.Blazor
+@inject NavigationManager navigation
+
+<CascadingBlazoredModal>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
@@ -12,3 +15,21 @@
         </NotFound>
     </Router>
 </CascadingBlazoredModal>
+
+@code {
+
+    [Inject]
+    public MetaMaskService MetaMaskService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        MetaMaskService.AccountChangedEvent += MetaMaskService_AccountChangedEvent;
+        await MetaMaskService.ListenToEvents();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task MetaMaskService_AccountChangedEvent(string arg)
+    {
+      navigation.NavigateTo("index", true);
+    }
+}

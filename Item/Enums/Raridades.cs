@@ -13,11 +13,11 @@ namespace Itens.Enums
         Normal = 1,
         [Display(Name = "Incomum")]
         Incomum = 2,
-        [Display(Name = "Epico")]
+        [Display(Name = "Épico")]
         Epico = 3,
-        [Display(Name = "Lendario")]
+        [Display(Name = "Lendário")]
         Lendario = 4,
-        [Display(Name = "Unico")]
+        [Display(Name = "Único")]
         Unico = 5,
     };
 }
