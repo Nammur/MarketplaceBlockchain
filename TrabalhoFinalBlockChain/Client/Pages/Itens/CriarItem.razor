@@ -17,24 +17,40 @@
 else
 {
     <EditForm Model="@item" OnValidSubmit="@Criar">
-        <InputSelect @bind-Value="item.Raridade" > 
-            @foreach (var raridade in raridades)
-            {
-                <option value="@GetValue(raridade)">@GetDisplayName(raridade)</option>
-            }
-        </InputSelect> 
-        <InputSelect @bind-Value="item.Tipo" > 
-            @foreach (var tipo in tipos)
-            {
-                <option value="@GetValue(tipo)">@GetDisplayName(tipo)</option>
-            }
-        </InputSelect> 
-        <InputSelect @bind-Value="item.Habilidade">
-            @foreach (var habilidade in habilidades)
-            {
-                <option value="@habilidade">@habilidade.Efeito</option>
-            }
-        </InputSelect>
+        <div style="display:flex;flex-direction:row;">
+            <div style="display:flex;flex-direction:column;padding:15px" class="col-3">
+                <label>Raridade</label>
+                <InputSelect @bind-Value="item.Raridade" > 
+                @foreach (var raridade in raridades)
+                {
+                    <option value="@GetValue(raridade)">@GetDisplayName(raridade)</option>
+                }
+                </InputSelect> 
+            </div>
+            <div style="display:flex;flex-direction:column; padding:15px" class="col-3">
+                <label>Tipo de item</label>
+                <InputSelect @bind-Value="item.Tipo" > 
+                    @foreach (var tipo in tipos)
+                    {
+                        <option value="@GetValue(tipo)">@GetDisplayName(tipo)</option>
+                    }
+            </InputSelect> 
+            </div>
+            <div style="display:flex;flex-direction:column; padding:15px" class="col-6">
+                <label>Habilidade</label>
+                <InputSelect @bind-Value="item.Habilidade">
+                    @foreach (var habilidade in habilidades)
+                    {
+                        <option value="@habilidade">@habilidade.Efeito</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+        
+        <div style="display:flex;flex-direction:column;" class="col-3">
+            <label>Ataque</label>
+            <InputNumber @bind-Value="item.Ataque">Ataque</InputNumber>
+        </div>
         <button class="bn54" type="submit">
             <span class="bn54span">Criar</span>
         </button>
