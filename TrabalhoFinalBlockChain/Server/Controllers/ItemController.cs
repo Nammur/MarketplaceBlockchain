@@ -34,11 +34,23 @@ namespace TrabalhoFinalBlockChain.Server.Controllers
             return _itemService.RecuperarItem(id);
         }
 
-        [HttpPost]
-        public ActionResult Criar([FromBody]Item item)
+        [HttpPost("Criar")]
+        public ActionResult Criar([FromBody]ItemViewModel item)
         {
             _itemService.Criar(item);
             return Ok();
+        }
+        [HttpPost("CriarHabilidade")]
+        public ActionResult CriarHabilidade([FromBody] Habilidade habilidade)
+        {
+            _itemService.CriarHabilidade(habilidade);
+            return Ok();
+        }
+
+        [HttpGet("ListarHabilidades")]
+        public ActionResult<List<Habilidade>> ListarHabilidades()
+        {
+            return _itemService.ListarHabilidades();
         }
 
         [HttpPut]

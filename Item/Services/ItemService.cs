@@ -44,6 +44,11 @@ namespace Itens.Services
             return itensViewModel;
         }
 
+        public List<Habilidade> ListarHabilidades()
+        {
+            return _itemRepository.ListarHabilidades();
+        }
+
         public ItemViewModel RecuperarItem(int id)
         {
             var item = _itemRepository.RecuperarItem(id);
@@ -51,9 +56,13 @@ namespace Itens.Services
         }
         public Habilidade RecuperarHabilidade(int idHabilidade) => _itemRepository.RecuperarItemHabilidade(idHabilidade);
 
-        public void Criar(Item item)
+        public void Criar(ItemViewModel item)
         {
             _itemRepository.Criar(item);
+        }
+        public void CriarHabilidade(Habilidade habilidade)
+        {
+            _itemRepository.CriarHabilidade(habilidade);
         }
         public void Editar(ItemViewModel item)
         {

@@ -1,0 +1,44 @@
+﻿@page "/CriarHabilidade"
+@using global::Itens.Models
+@using global::Players.Models
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<link href="css/CustomButton.css" rel="stylesheet" />
+
+<h1 style="font-size:20px;">Informe o efeito da nova habilidade.</h1>
+<EditForm Model="@habilidade" style="max-width:300px; max-height: 200px; margin-top:20px;S" OnValidSubmit="@Enviar">
+    <div style="display:flex;flex-direction:column;padding:15px">
+        <div style="margin-top:5px;">
+            <InputText @bind-Value="@habilidade.Efeito"  style="display:inline-block" placeholder="Efeito" />
+        </div>
+        <div style="display:flex; align-items:center; justify-content:center;">
+            <button type="submit" class="bn54" style="margin-top:20px;">
+                <span class="bn54span">Criar</span>
+            </button>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+    [Inject]
+    public Player? Player { get; set; }
+
+    [CascadingParameter]
+    public BlazoredModalInstance ModalInstance { get; set; }
+
+    public Habilidade habilidade { get; set; }
+
+    protected override void OnInitialized()
+    {
+        habilidade = new Habilidade();
+        base.OnInitialized();
+    }
+
+    async void Enviar()
+    {
+        await http.PostAsJsonAsync("api/item/CriarHabilidade", habilidade);
+        ModalInstance.CloseAsync();
+    }
+}
