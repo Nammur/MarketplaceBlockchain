@@ -40,12 +40,12 @@ else
             <div style="display:flex;flex-direction:column; padding:15px" class="col-6">
                 <label>Habilidade</label>
                 <div style="display:flex;flex-direction:row;">
-                    <InputSelect @bind-Value="item.Habilidade" class="col-10">
-                        @foreach (var hab in habilidades)
-                        {
-                            <option value="@hab">@hab.Efeito</option>
-                        }
-                    </InputSelect>
+                    <InputSelect @bind-Value="item.Habilidade.Id" > 
+                    @foreach (var hab in habilidades)
+                    {
+                        <option value="@hab.Id">@hab.Efeito</option>
+                    }
+                </InputSelect> 
                      <div  style="display:flex; align-items:center; margin-left:15px" class="col-2">
                         <button type="button" class="bn54" style="height:fit-content; width:60px" onclick="@CriarHabilidade">
                             <i class="fa fa-plus"></i>
@@ -86,7 +86,7 @@ else
     [Inject]
     public Player? Player { get; set; }
 
-    private ItemViewModel item { get; set; } = new ItemViewModel();
+    private ItemViewModel item { get; set; }
 
     private List<Habilidade> habilidades { get; set; } = new List<Habilidade>();
 
@@ -101,14 +101,15 @@ else
     {
         base.OnInitialized();
 
+        ListarHabilidades();
+        item = new ItemViewModel();
         tipos = Enum.GetValues(typeof(Tipos)).Cast<Tipos>().ToList();
         raridades = Enum.GetValues(typeof(Raridades)).Cast<Raridades>().ToList();
 
         item.Raridade = (int)Raridades.Normal;
         item.Tipo = (int)Tipos.Espada;
-        
-        ListarHabilidades(); 
-        item.Habilidade = habilidades.FirstOrDefault();
+
+        item.Habilidade = new Habilidade(1,"");
     }
 
     public static string GetDisplayName(Enum enumValue)
@@ -144,12 +145,20 @@ else
                 };
 
         await Modal.Show<CriarHabilidade>("", options).Result;
+        ResetarItem();
         ListarHabilidades();
+        
     }
 
     public async void ListarHabilidades()
     {
         habilidades = await http.GetFromJsonAsync<List<Habilidade>>("api/item/ListarHabilidades");
         StateHasChanged();
+    }
+
+    private void ResetarItem()
+    {
+        item = new ItemViewModel();
+        item.Habilidade = new Habilidade(1, "");
     }
 }

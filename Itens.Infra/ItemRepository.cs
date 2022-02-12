@@ -13,7 +13,7 @@ namespace Itens.Infra
         public void Criar(ItemViewModel item)
         {
             var sql = @"INSERT INTO dbo.Item
-                                    (IdChain, Raridada, Tipo, Ataque, Defesa, Acerto, Vida, IdHabilidade)
+                                    (IdChain, Raridade, Tipo, Ataque, Defesa, Acerto, Vida, IdHabilidade)
                                      Values 
                                     (@idChain, @raridade, @tipo, @ataque, @defesa, @acerto, @vida, @habilidade)";
             var @params = new List<DataParameter>
