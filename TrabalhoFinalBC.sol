@@ -17,11 +17,12 @@ contract TrabalhoFinalBlockchain {
     
     address payable private owner;
 	mapping (address=>Item) private itens;
-	mapping (address=>uint) private saques;
+	mapping (address=>uint) private balances;
 	
     
     constructor() payable {
         owner = payable(msg.sender);
+		balances[address(this)] += msg.value;
     }
     
     modifier onlyOwner {
@@ -52,13 +53,13 @@ contract TrabalhoFinalBlockchain {
 		item.avenda = false;
 		itens[endereco] = item;
 
-		saques[address(this)] += item.preco / 10;
-		saques[antigoDono] += item.preco /10 * 9;
+		balances[address(this)] += msg.value / 10;
+		balances[antigoDono] += msg.value /10 * 9;
 	}
 
 	function AdicionarFundos() onlyOwner payable public{
 		require(msg.value > 0, "Adicione fundos a transacao.");
-		saques[address(this)] += msg.value;
+		balances[address(this)] += msg.value;
 	}
 
 	function ColocarItemAVenda(address endereco, uint valor) public {
@@ -72,21 +73,27 @@ contract TrabalhoFinalBlockchain {
 	}
 
 	function GetSaldoContrato() onlyOwner public view returns(uint) {
-		return saques[address(this)];
+		uint saldo = balances[address(this)];
+		return saldo;
 	}
 
 	function SacarTudoContrato() onlyOwner public{
-		msg.sender.transfer(saques[address(this)]);
-		saques[address(this)] = 0;
+		msg.sender.transfer(balances[address(this)]);
+		balances[address(this)] = 0;
 	}
 
 	function SacarSaldo() public {
-		msg.sender.transfer(saques[msg.sender]);
-		saques[msg.sender] = 0;
+		msg.sender.transfer(balances[msg.sender]);
+		balances[msg.sender] = 0;
+	}
+
+	function AtribuirNovoDono(address item, address novoDono) onlyOwner public{
+		itens[item].dono = novoDono;
 	}
 
 	function VerSaldo() view public returns(uint){	
-		return saques[msg.sender];
+		uint saldo = balances[msg.sender]; 
+		return saldo;
 	}
 
 	function destroy() public onlyOwner {
